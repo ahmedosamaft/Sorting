@@ -17,7 +17,7 @@ Id=69712, Name=Mariam, Gpa=3.700000
 Id=97848, Name=Mohamed Kamal, Gpa=2.200000
 Id=78697, Name=Sara Ahmed, Gpa=3.100000
 Algorithm: Merge Sort
-Running Time: 2 microseconds
+Running Time: 3 microseconds
 Id=3541, Name=Ali, Gpa=3.500000
 Id=69712, Name=Mariam, Gpa=3.700000
 Id=97848, Name=Mohamed Kamal, Gpa=2.200000

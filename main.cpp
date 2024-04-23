@@ -19,43 +19,16 @@ void runAlgorithm(std::string algorithmName,
                   std::function<void()> action,
                   std::ostream &fout = std::cout);
 
+template<typename T>
+void runAllSortingAlgorithm(std::function<bool(T &, T &)> cmp, std::string fileDir);
+
 int main() {
     readStudentsData();
-    Algorithms::Sorting<Faculty::Student> sorter;
-    std::function<bool(Faculty::Student &, Faculty::Student &)> cmp = [](auto &student_a, auto &student_b) -> bool {
+    runAllSortingAlgorithm<Faculty::Student>([](auto &student_a, auto &student_b) -> bool {
         return student_a.getGpa() < student_b.getGpa();
-    };
-    std::ofstream fout("SortedByGPA.txt");
-    std::function<void()> fn = [&]() { sorter.InsertionSort(students, total_students, cmp); };
-    runAlgorithm("Insertion Sort", fn, fout);
-    fn = [&]() { sorter.SelectionSort(students, total_students, cmp); };
-    runAlgorithm("Selection Sort", fn, fout);
-    fn = [&]() { sorter.BubbleSort(students, total_students, cmp); };
-    runAlgorithm("Bubble Sort", fn, fout);
-    fn = [&]() { sorter.MergeSort(students, total_students, cmp); };
-    runAlgorithm("Merge Sort", fn, fout);
-    fn = [&]() { sorter.QuickSort(students, total_students, cmp); };
-    runAlgorithm("Quick Sort", fn, fout);
-    fn = [&]() { sorter.ShellSort(students, total_students, cmp); };
-    runAlgorithm("Shell Sort", fn, fout);
-    fout.close();
-    fout.open("SortedByName.txt");
-    cmp = [](auto &student_a, auto &student_b) -> bool {
-        return student_a < student_b;
-    };
-    fn = [&]() { sorter.InsertionSort(students, total_students, cmp); };
-    runAlgorithm("Insertion Sort", fn, fout);
-    fn = [&]() { sorter.SelectionSort(students, total_students, cmp); };
-    runAlgorithm("Selection Sort", fn, fout);
-    fn = [&]() { sorter.BubbleSort(students, total_students, cmp); };
-    runAlgorithm("Bubble Sort", fn, fout);
-    fn = [&]() { sorter.MergeSort(students, total_students, cmp); };
-    runAlgorithm("Merge Sort", fn, fout);
-    fn = [&]() { sorter.QuickSort(students, total_students, cmp); };
-    runAlgorithm("Quick Sort", fn, fout);
-    fn = [&]() { sorter.ShellSort(students, total_students, cmp); };
-    runAlgorithm("Shell Sort", fn, fout);
-    fout.close();
+    }, "SortedByGPA.txt");
+    runAllSortingAlgorithm<Faculty::Student>(
+            [](auto &student_a, auto &student_b) -> bool { return student_a < student_b; }, "SortedByName.txt");
     delete[] students;
 }
 
@@ -97,4 +70,23 @@ void runAlgorithm(std::string algorithmName,
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     fout << "Running Time: " << duration.count() << " microseconds\n";
     printStudents(fout);
+}
+
+template<typename T>
+void runAllSortingAlgorithm(std::function<bool(T &, T &)> cmp, std::string fileDir) {
+    Algorithms::Sorting<T> sorter;
+    std::ofstream fout(fileDir);
+    std::function<void()> fn = [&]() { sorter.InsertionSort(students, total_students, cmp); };
+    runAlgorithm("Insertion Sort", fn, fout);
+    fn = [&]() { sorter.SelectionSort(students, total_students, cmp); };
+    runAlgorithm("Selection Sort", fn, fout);
+    fn = [&]() { sorter.BubbleSort(students, total_students, cmp); };
+    runAlgorithm("Bubble Sort", fn, fout);
+    fn = [&]() { sorter.MergeSort(students, total_students, cmp); };
+    runAlgorithm("Merge Sort", fn, fout);
+    fn = [&]() { sorter.QuickSort(students, total_students, cmp); };
+    runAlgorithm("Quick Sort", fn, fout);
+    fn = [&]() { sorter.ShellSort(students, total_students, cmp); };
+    runAlgorithm("Shell Sort", fn, fout);
+    fout.close();
 }
